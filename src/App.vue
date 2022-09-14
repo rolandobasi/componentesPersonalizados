@@ -22,8 +22,18 @@
       </div>
 
       <v-spacer></v-spacer>
-
       <v-btn
+        text
+        class="mr-2"
+        @click="$router.push({ name: 'listadoPruebas' })"
+        outlined
+        color="white"
+      >
+        Pruebas
+        <v-icon class="ml-2"> mdi-cog </v-icon>
+      </v-btn>
+      <v-btn
+        outlined
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
         text
