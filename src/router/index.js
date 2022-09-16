@@ -21,12 +21,11 @@ const routes = [
   },
   {
     path: "/pruebas",
-    name: "pruebas",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    name: "listadoPruebas",
     component: () =>
-      import(/* webpackChunkName: "modal" */ "../views/Pruebas.vue"),
+      import(
+        /* webpackChunkName: "ListadoPruebas" */ "../modules/pruebas/views/listadoPruebas.vue"
+      ),
   },
 ];
 
