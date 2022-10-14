@@ -16,6 +16,7 @@
           <component :is="item.content" />
         </v-tab-item>
       </v-tabs-items>
+      <AppDataTable />
     </v-card>
   </v-container>
 </template>

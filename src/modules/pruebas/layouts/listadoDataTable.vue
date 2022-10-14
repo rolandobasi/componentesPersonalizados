@@ -7,15 +7,16 @@
         Nuevo Registro <v-icon> mdi-plus-box-outline</v-icon></v-btn
       >
     </div>
-    <AppDataTable
-      :headers="headers"
-      :items="items"
-      :tablaAcciones="tablaAcciones"
-    >
-      <template v-slot:[`item.direccion`]="{ item }">
-        {{ item.direccion }}
-      </template>
-    </AppDataTable>
+    <v-container style="height: 70vh">
+      <DataTable
+        :headers="headers"
+        @paginate="getSolicitud"
+        :response="response"
+        :actions="actions"
+      >
+      </DataTable>
+    </v-container>
+
     <AppDialog
       v-model="value"
       :custom="true"
@@ -69,10 +70,11 @@ export default {
   name: "listadoTabla",
   components: {
     AppTitle: defineAsyncComponent(() => import("@/components/AppTitle.vue")),
-    AppDataTable: defineAsyncComponent(() =>
-      import("@/components/AppDataTable.vue")
-    ),
+    // AppDataTable: defineAsyncComponent(() =>
+    //   import("@/components/AppDataTable.vue")
+    // ),
     AppDialog: defineAsyncComponent(() => import("@/components/AppDialog.vue")),
+    DataTable: defineAsyncComponent(() => import("@/components/DataTable.vue")),
   },
   data: () => ({
     value: false,
@@ -83,43 +85,93 @@ export default {
     },
     headers: [
       {
-        text: "Nombre",
-        align: "center",
-        sortable: true,
-        value: "nombre",
-        class: "primary white--text",
-      },
-      {
-        text: "Dirección",
-        align: "center",
-        sortable: true,
-        value: "direccion",
-        class: "primary white--text",
-      },
-      {
-        text: "Fax",
-        align: "center",
-        sortable: true,
-        value: "fax",
-        class: "primary white--text",
-      },
-      {
-        text: "Teléfono",
-        align: "center",
+        text: "ID",
+        align: "start",
         sortable: false,
-        value: "telefono",
-        class: "primary white--text",
+        value: "id",
+      },
+      { text: "Estado Solicitud", value: "estado_solicitud.nombre" },
+      { text: "Fecha Creacion", value: "fecha_creacion" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    items: [
+      {
+        name: "Frozen Yogurt",
+        calories: 159,
+        fat: 6.0,
+        carbs: 24,
+        protein: 4.0,
+        class: "bluePatologia white--text",
       },
       {
-        text: "Acciones",
-        value: "actions",
-        align: "center",
-        sortable: false,
-        class: "primary white--text text-center",
-        width: 200,
+        name: "Ice cream sandwich",
+        calories: 237,
+        fat: 9.0,
+        carbs: 37,
+        protein: 4.3,
+        class: "bluePatologia white--text",
+      },
+      {
+        name: "Eclair",
+        calories: 262,
+        fat: 16.0,
+        carbs: 23,
+        protein: 6.0,
+        class: "bluePatologia white--text",
+      },
+      {
+        name: "Cupcake",
+        calories: 305,
+        fat: 3.7,
+        carbs: 67,
+        protein: 4.3,
+        class: "bluePatologia white--text",
+      },
+      {
+        name: "Gingerbread",
+        calories: 356,
+        fat: 16.0,
+        carbs: 49,
+        protein: 3.9,
+        class: "bluePatologia white--text",
       },
     ],
-    items: [],
+    response: [],
+    actions: [
+      {
+        tooltip: {
+          text: "Enviar Notificación",
+          color: "gtPrimary",
+        },
+        icon: {
+          color: "gtPrimary",
+          name: "mdi-send-check",
+        },
+        eventName: "send",
+      },
+      {
+        tooltip: {
+          text: "Ver",
+          color: "gtPrimary",
+        },
+        icon: {
+          color: "gtPrimary",
+          name: "mdi-eye",
+        },
+        eventName: "show1",
+      },
+      {
+        tooltip: {
+          text: "Imprimir",
+          color: "red",
+        },
+        icon: {
+          color: "red",
+          name: "mdi-printer",
+        },
+        eventName: "show",
+      },
+    ],
     tablaAcciones: [
       {
         id: 1,
@@ -244,15 +296,18 @@ export default {
     ],
   }),
   methods: {
-    async getUsuarios() {
+    async getSolicitud(pagination = { per_page: 10, pagina: 1 }) {
+      const response1 = { ...pagination };
       const response = await axios.get(
-        "http://10.168.241.215:8010/api/v1/establecimientos"
+        "http://10.168.241.215:8010/api/v1/solicitudes",
+        { params: response1 }
       );
-      this.items = response.data.body;
+      console.log(response.data);
+      this.response = response.data;
     },
   },
   created() {
-    this.getUsuarios();
+    this.getSolicitud();
   },
 };
 </script>

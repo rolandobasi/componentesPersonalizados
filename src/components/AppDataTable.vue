@@ -11,21 +11,6 @@
         <slot :name="name" v-bind="data"></slot>
       </template>
 
-      <template v-slot:activator="{ on }">
-        <v-tooltip top color="blue">
-          <v-icon
-            v-if="item.id_estado_solicitud != 2"
-            v-on="on"
-            color="bluePatologia"
-            size="20"
-            @click="$emit('mostrarModalPlane')"
-          >
-            fa-solid fa-paper-plane
-          </v-icon>
-          <span>Agregar referencia</span>
-        </v-tooltip>
-      </template>
-
       <template v-slot:[`item.actions`]="{ item }">
         <v-tooltip
           :top="acciones.tooltip.top"
